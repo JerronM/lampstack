@@ -1,5 +1,4 @@
 #!/bin/bash
-# Check if user is Root
 # Update OS
 f_update_os () {
     echo "Starting update os ..."
@@ -23,9 +22,19 @@ systemctl restart apache2
 sleep 1
 echo "<?php phpinfo(); ?>" > /var/www/html/info.php
 #Install MySQL
-echo "mysql-server mysql-server/root_password password root" | debconf-set-selections
-echo "mysql-server mysql-server/root_password_again password root" | debconf-set-selections
-apt-get -y install mysql-server
+sudo apt-get install mysql-server
+ufw enable
+ufw allow mysql
+systemctl start mysql
+systemctl enable mysql
+#Change root password
+mysql -u root <<-EOF
+UPDATE mysql.user SET Password=PASSWORD('123') WHERE User='root';
+DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+DELETE FROM mysql.user WHERE User='';
+DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';
+FLUSH PRIVILEGES;
+EOF
 sleep 1
 
 xdg-open "http://localhost"
