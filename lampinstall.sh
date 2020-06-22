@@ -46,3 +46,8 @@ f_sub_main () {
 
 
 exit
+
+
+
+#To convert DOS line endings to UNIX if it wont run (^M bad interpreter error)
+#sed -i -e 's/\r$//'
