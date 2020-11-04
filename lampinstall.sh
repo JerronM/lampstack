@@ -42,8 +42,8 @@ FLUSH PRIVILEGES;
 EOF
 sleep 1
 
-xdg-open "http://localhost"
-xdg-open "http://localhost/info.php"
+# xdg-open "http://localhost"
+# xdg-open "http://localhost/info.php"
 
 f_sub_main () {
     f_update_os
